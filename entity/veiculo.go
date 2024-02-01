@@ -9,8 +9,6 @@ type Veiculo struct {
 	CodigoTipoVeiculo      uint8  `json:"codigoTipoVeiculo"`
 	AnoModelo              string `json:"anoModelo"`
 	CodigoTipoCombustivel  uint8  `json:"codigoTipoCombustivel"`
-	TipoVeiculo            string `json:"tipoVeiculo"`
-	ModeloCodigoExterno    string `json:"modeloCodigoExterno"`
 	TipoConsulta           string `json:"tipoConsulta"`
 }
 
