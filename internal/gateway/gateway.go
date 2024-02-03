@@ -7,39 +7,42 @@ import (
 	"io"
 	"net/http"
 
-	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/entity"
+	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
 )
 
-var urlEntryPoint string = "https://veiculos.fipe.org.br/api/veiculos//ConsultarValorComTodosParametros"
+var urlEntryPoint string = "https://veiculos.fipe.org.br/"
+var urlEndPoint = ""
+var postHeaderContentType = "application/json"
 
-func EntryPointRequest(v veiculo.Veiculo) (veiculo.VeiculoResponse, error) {
+func GetVeiculoI(v veiculo.VeiculoModel) (veiculo.VeiculoResponse, error) {
+	urlEndPoint = "api/veiculos//ConsultarValorComTodosParametros"
 	veiculo := veiculo.VeiculoResponse{}
 
-	body, err := json.Marshal(v)
+	pl, err := json.Marshal(v)
 	if err != nil {
-		fmt.Println("Erro ao converter o tipo veiculo para JSON")
+		err := fmt.Errorf("erro ao converter o tipo veiculo para JSON")
 		return veiculo, err
 	}
-	payload := bytes.NewBuffer(body)
+	payload := bytes.NewBuffer(pl)
 
-	resp, err := http.Post(urlEntryPoint, "application/json", payload)
-	if err != nil {
-		fmt.Println("Erro ao fazer requisição")
-		return veiculo, err
-	}
-
-	bod, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Erro ao ler dados do request")
+	resp, err := http.Post(urlEntryPoint+urlEndPoint, postHeaderContentType, payload)
+	if err != nil || resp.StatusCode != 200 {
+		err := fmt.Errorf("erro ao fazer a requisição para: \n\t%s, statusCode: %d", resp.Request.URL, resp.StatusCode)
 		return veiculo, err
 	}
 
-	err = json.Unmarshal([]byte(bod), &veiculo)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Erro ao converter JSON para o tipo veiculo")
+		err := fmt.Errorf("erro ao ler dados do request")
 		return veiculo, err
 	}
-
 	defer resp.Body.Close()
+
+	err = json.Unmarshal([]byte(body), &veiculo)
+	if err != nil {
+		err := fmt.Errorf("erro ao converter JSON para o tipo veiculo")
+		return veiculo, err
+	}
+
 	return veiculo, nil
 }
