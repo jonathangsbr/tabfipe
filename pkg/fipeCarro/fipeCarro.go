@@ -10,6 +10,18 @@ import (
 
 var codTipoCarro uint8 = 1
 
+func GetCodTipoCarro() uint8 {
+	return codTipoCarro
+}
+
+func GetCodTabelaReferenciaRecente() uint16 {
+	return gateway.CodTabelaReferenciaRecente
+}
+
+func GetVeiculoModeloBase() veiculo.VeiculoModel {
+	return veiculo.VeiculoModel{CodigoTipoVeiculo: codTipoCarro, TipoConsulta: "tradicional", CodigoTabelaReferencia: GetCodTabelaReferenciaRecente()}
+}
+
 func GetMarcasObj() ([]veiculoHelper.VeiculoMarca, error) {
 	return gateway.GetMarcasI(codTipoCarro)
 }
@@ -25,11 +37,8 @@ func GetMarcasJSON() (string, error) {
 
 func GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHelper.Modelo, error) {
 	// if
-	veiculo := veiculo.VeiculoModel{}
-	veiculo.SetTipoVeiculo(codTipoCarro)
-	veiculo.SetTipoConsulta("tradicional")
+	veiculo := GetVeiculoModeloBase()
 	veiculo.SetMarca(m)
-	veiculo.SetTabelaReferencia(gateway.CodTabelaReferenciaRecente)
 	modelos, err := gateway.GetModelosI(veiculo)
 	return veiculo, modelos, err
 }
