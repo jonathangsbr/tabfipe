@@ -71,7 +71,7 @@ func (v *VeiculoResponse) ToString() string {
 	return "Valor: " + v.Valor +
 		"\nMarca: " + v.Marca +
 		"\nModelo: " + v.Modelo +
-		"\nAnoModelo: " + strconv.Itoa(int(v.AnoModelo)) +
+		"\nAnoModelo: " + anoModeloFormat(v.AnoModelo) +
 		"\nCombustivel: " + v.Combustivel +
 		"\nCodigoFipe: " + v.CodigoFipe +
 		"\nMesReferencia: " + v.MesReferencia +
@@ -79,4 +79,13 @@ func (v *VeiculoResponse) ToString() string {
 		"\nTipoVeiculo: " + strconv.Itoa(int(v.TipoVeiculo)) +
 		"\nSiglaCombustivel: " + v.SiglaCombustivel +
 		"\nDataConsulta: " + v.DataConsulta
+}
+
+func anoModeloFormat(a uint16) string {
+	str := strconv.Itoa(int(a))
+	if str == "32000" {
+		return "Zero KM"
+	} else {
+		return str
+	}
 }
