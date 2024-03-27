@@ -2,6 +2,7 @@ package fipeCarro
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
@@ -46,6 +47,12 @@ func GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHe
 func GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
 	v.SetCodigoModelo(m.CodigoModelo)
 	anos, err := gateway.GetAnosI(*v)
+	for _, v := range anos {
+		if strings.Contains(v.AnoComb, "3200") {
+			str := strings.Replace("3200", v.AnoComb, "Zero KM", 1)
+			v.AnoComb = str
+		}
+	}
 	return anos, err
 
 }
