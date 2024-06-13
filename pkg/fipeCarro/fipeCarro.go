@@ -47,10 +47,12 @@ func GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHe
 func GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
 	v.SetCodigoModelo(m.CodigoModelo)
 	anos, err := gateway.GetAnosI(*v)
-	for _, v := range anos {
-		if strings.Contains(v.AnoComb, "3200") {
-			str := strings.Replace("3200", v.AnoComb, "Zero KM", 1)
-			v.AnoComb = str
+	for i, v := range anos {
+		if strings.Contains(v.AnoComb, "32000") {
+			str := strings.Replace(v.AnoComb, "32000", "Zero KM", -1)
+			// str2 := strings.Replace(v.AnoComb, "32000", "Zero KM", -1)
+			anos[i].AnoComb = str
+			// anos[i].AnoValue = str2
 		}
 	}
 	return anos, err
