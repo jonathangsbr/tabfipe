@@ -3,9 +3,9 @@ package fipeVeiculo
 import (
 	"strings"
 
-	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
-	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
-	"github.com/jonathangsbr/tabfipe-api-gateway/internal/gateway"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculo"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculoHelper"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/internal/gateway"
 )
 
 var codTipoVeiculo uint8 = 0

@@ -1,9 +1,9 @@
 package fipeMoto
 
 import (
-	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
-	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
-	"github.com/jonathangsbr/tabfipe-api-gateway/pkg/fipeVeiculo"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculo"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculoHelper"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/pkg/fipeVeiculo"
 )
 
 var codTipoVeiculo uint8 = 2

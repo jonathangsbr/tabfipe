@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
+	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculo"
 )
 
 var urlEntryPoint string = "https://veiculos.fipe.org.br/"
