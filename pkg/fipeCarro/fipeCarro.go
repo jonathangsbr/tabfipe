@@ -1,65 +1,50 @@
 package fipeCarro
 
 import (
-	"encoding/json"
-	"strings"
-
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
-	"github.com/jonathangsbr/tabfipe-api-gateway/internal/gateway"
+	"github.com/jonathangsbr/tabfipe-api-gateway/pkg/fipeVeiculo"
 )
 
-var codTipoCarro uint8 = 1
+var codTipoVeiculo uint8 = 1
 
-func GetCodTipoCarro() uint8 {
-	return codTipoCarro
+type carro struct{}
+
+func NewCarro() *carro {
+	c := &carro{}
+	c.init()
+	return c
 }
 
-func GetCodTabelaReferenciaRecente() uint16 {
-	return gateway.CodTabelaReferenciaRecente
+func (c *carro) init() {
+	fipeVeiculo.SetCodTipoVeiculo(codTipoVeiculo)
 }
 
-func GetVeiculoModeloBase() veiculo.VeiculoModel {
-	return veiculo.VeiculoModel{CodigoTipoVeiculo: codTipoCarro, TipoConsulta: "tradicional", CodigoTabelaReferencia: GetCodTabelaReferenciaRecente()}
+func (c *carro) GetCodTipoVeiculo() uint8 {
+	return fipeVeiculo.GetCodTipoVeiculo()
 }
 
-func GetMarcasObj() ([]veiculoHelper.VeiculoMarca, error) {
-	return gateway.GetMarcasI(codTipoCarro)
+func (c *carro) GetCodTabelaReferenciaRecente() uint16 {
+	return fipeVeiculo.GetCodTabelaReferenciaRecente()
 }
 
-func GetMarcasJSON() (string, error) {
-	marcas, err := gateway.GetMarcasI(codTipoCarro)
-	if err != nil {
-		return "{}", err
-	}
-	m, err := json.Marshal(marcas)
-	return string(m), err
+func (c *carro) GetVeiculoModeloBase() veiculo.VeiculoModel {
+	return fipeVeiculo.GetVeiculoModeloBase()
 }
 
-func GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHelper.Modelo, error) {
-	// if
-	veiculo := GetVeiculoModeloBase()
-	veiculo.SetMarca(m)
-	modelos, err := gateway.GetModelosI(veiculo)
-	return veiculo, modelos, err
+func (c *carro) GetMarcasObj() ([]veiculoHelper.VeiculoMarca, error) {
+	return fipeVeiculo.GetMarcasObj()
 }
 
-func GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
-	v.SetCodigoModelo(m.CodigoModelo)
-	anos, err := gateway.GetAnosI(*v)
-	for i, v := range anos {
-		if strings.Contains(v.AnoComb, "32000") {
-			str := strings.Replace(v.AnoComb, "32000", "Zero KM", -1)
-			// str2 := strings.Replace(v.AnoComb, "32000", "Zero KM", -1)
-			anos[i].AnoComb = str
-			// anos[i].AnoValue = str2
-		}
-	}
-	return anos, err
+func (c *carro) GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHelper.Modelo, error) {
+	return fipeVeiculo.GetModelos(m)
+}
+
+func (c *carro) GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
+	return fipeVeiculo.GetAnos(v, m)
 
 }
 
-func GetCarro(v *veiculo.VeiculoModel, a veiculoHelper.Ano) (veiculo.VeiculoResponse, error) {
-	v.SetAnoComb(a)
-	return gateway.GetVeiculoI(*v)
+func (c *carro) GetVeiculo(v *veiculo.VeiculoModel, a veiculoHelper.Ano) (veiculo.VeiculoResponse, error) {
+	return fipeVeiculo.GetVeiculo(v, a)
 }

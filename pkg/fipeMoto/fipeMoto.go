@@ -1,46 +1,50 @@
-package fipemoto
+package fipeMoto
 
 import (
-	"encoding/json"
-
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
 	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
-	"github.com/jonathangsbr/tabfipe-api-gateway/internal/gateway"
+	"github.com/jonathangsbr/tabfipe-api-gateway/pkg/fipeVeiculo"
 )
 
-var codTipoMoto uint8 = 2
+var codTipoVeiculo uint8 = 2
 
-func GetMarcasObj() ([]veiculoHelper.VeiculoMarca, error) {
-	return gateway.GetMarcasI(codTipoMoto)
+type moto struct{}
+
+func NewMoto() *moto {
+	c := &moto{}
+	c.init()
+	return c
 }
 
-func GetMarcasJSON() (string, error) {
-	marcas, err := gateway.GetMarcasI(codTipoMoto)
-	if err != nil {
-		return "{}", err
-	}
-	m, err := json.Marshal(marcas)
-	return string(m), err
+func (c *moto) init() {
+	fipeVeiculo.SetCodTipoVeiculo(codTipoVeiculo)
 }
 
-func GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHelper.Modelo, error) {
-	veiculo := veiculo.VeiculoModel{}
-	veiculo.SetTipoVeiculo(codTipoMoto)
-	veiculo.SetTipoConsulta("tradicional")
-	veiculo.SetMarca(m)
-	veiculo.SetTabelaReferencia(gateway.CodTabelaReferenciaRecente)
-	modelos, err := gateway.GetModelosI(veiculo)
-	return veiculo, modelos, err
+func (c *moto) GetCodTipoVeiculo() uint8 {
+	return fipeVeiculo.GetCodTipoVeiculo()
 }
 
-func GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
-	v.SetCodigoModelo(m.CodigoModelo)
-	anos, err := gateway.GetAnosI(*v)
-	return anos, err
+func (c *moto) GetCodTabelaReferenciaRecente() uint16 {
+	return fipeVeiculo.GetCodTabelaReferenciaRecente()
+}
+
+func (c *moto) GetVeiculoModeloBase() veiculo.VeiculoModel {
+	return fipeVeiculo.GetVeiculoModeloBase()
+}
+
+func (c *moto) GetMarcasObj() ([]veiculoHelper.VeiculoMarca, error) {
+	return fipeVeiculo.GetMarcasObj()
+}
+
+func (c *moto) GetModelos(m veiculoHelper.VeiculoMarca) (veiculo.VeiculoModel, []veiculoHelper.Modelo, error) {
+	return fipeVeiculo.GetModelos(m)
+}
+
+func (c *moto) GetAnos(v *veiculo.VeiculoModel, m veiculoHelper.Modelo) ([]veiculoHelper.Ano, error) {
+	return fipeVeiculo.GetAnos(v, m)
 
 }
 
-func GetCarro(v *veiculo.VeiculoModel, a veiculoHelper.Ano) (veiculo.VeiculoResponse, error) {
-	v.SetAnoComb(a)
-	return gateway.GetVeiculoI(*v)
+func (c *moto) GetVeiculo(v *veiculo.VeiculoModel, a veiculoHelper.Ano) (veiculo.VeiculoResponse, error) {
+	return fipeVeiculo.GetVeiculo(v, a)
 }
