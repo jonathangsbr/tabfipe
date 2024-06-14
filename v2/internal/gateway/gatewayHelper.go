@@ -8,8 +8,8 @@ import (
 	"log"
 	"net/http"
 
-	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculo"
-	veiculoHelper "github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
+	veiculo "github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculo"
+	veiculoHelper "github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculoHelper"
 )
 
 var CodTabelaReferenciaRecente uint16

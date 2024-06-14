@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jonathangsbr/tabfipe-api-gateway/entity/veiculoHelper"
+	"github.com/jonathangsbr/tabfipe-api-gateway/v2/entity/veiculoHelper"
 )
 
 type VeiculoModel struct {
